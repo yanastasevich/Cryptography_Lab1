@@ -10,11 +10,11 @@ public class MorseCodeDecoding {
     public static void main(String[] args) {
         fillMorseCodeMap(morseCodeMap);
 
-        String cipherText = encrypt(plainText, morseCodeMap);
+        String cipherText = encrypt(plainText);
         System.out.println("Ciphertext is " + cipherText);
 
         //String value = ". ...- . .-. -.-- - .... .. -. --. | .. ... | .--. --- .. -. - .-.. . ... ... | - .... . .-. . | .. ... | -. --- | -- . .- -. .. -. --. | - --- | .-.. .. ..-. .";
-        String plainText = decrypt(cipherText, morseCodeMap);
+        String plainText = decrypt(cipherText);
         //TODO: the phrase is decoded with LIF in the end
         System.out.println("decoded phrase is " + plainText);
     }
@@ -60,17 +60,17 @@ public class MorseCodeDecoding {
 
     }
 
-    public static String encrypt(String plaintext, Map<Character, String> map) {
+    public static String encrypt(String plaintext) {
         StringBuilder ciphertext = new StringBuilder();
         for (int i = 0; i < plaintext.length(); i++) {
             ciphertext
-                    .append(map.get(plaintext.toUpperCase(Locale.ROOT).charAt(i)))
+                    .append(morseCodeMap.get(plaintext.toUpperCase(Locale.ROOT).charAt(i)))
                     .append(' ');
         }
         return ciphertext.toString();
     }
 
-    public static String decrypt(String cipherText, Map<Character, String> map) {
+    public static String decrypt(String cipherText) {
         int start = 0;
         int end = 0;
         StringBuilder plainText = new StringBuilder();
@@ -81,7 +81,7 @@ public class MorseCodeDecoding {
             if (i == cipherText.length() - 1) {
                 end = i + 1;
                 String sequence = cipherText.substring(start, end);
-                plainText = plainText.append(getKey(sequence, map));
+                plainText = plainText.append(getKey(sequence, morseCodeMap));
                 break;
             }
             if (charPos.equals("|")) {
@@ -91,7 +91,7 @@ public class MorseCodeDecoding {
             if (charPos.equals(" ")) {
                 end = i;
                 String sequence = cipherText.substring(start, end);
-                plainText = plainText.append(getKey(sequence, map));
+                plainText = plainText.append(getKey(sequence, morseCodeMap));
                 start = i + 1;
             }
         }
