@@ -9,16 +9,17 @@ public class MorseCodeDecoding {
 
     public static void main(String[] args) {
         fillMorseCodeMap(morseCodeMap);
-//        String cipherText = encrypt(plainText, morseCodeMap);
-//        System.out.println("Ciphertext is " + cipherText);
-        String value = ". ...- . .-. -.-- - .... .. -. --. | .. ... | .--. --- .. -. - .-.. . ... ... | - .... . .-. . | .. ... | -. --- | -- . .- -. .. -. --. | - --- | .-.. .. ..-. .";
-        String plainText = decrypt(value, morseCodeMap);
+
+        String cipherText = encrypt(plainText, morseCodeMap);
+        System.out.println("Ciphertext is " + cipherText);
+
+        //String value = ". ...- . .-. -.-- - .... .. -. --. | .. ... | .--. --- .. -. - .-.. . ... ... | - .... . .-. . | .. ... | -. --- | -- . .- -. .. -. --. | - --- | .-.. .. ..-. .";
+        String plainText = decrypt(cipherText, morseCodeMap);
+        //TODO: the phrase is decoded with LIF in the end
         System.out.println("decoded phrase is " + plainText);
-
-
     }
 
-    public static Map<Character, String> fillMorseCodeMap(Map<Character, String> map) {
+    public static void fillMorseCodeMap(Map<Character, String> map) {
         map.put('A', ".-");
         map.put('B', "-...");
         map.put('C', "-.-.");
@@ -57,7 +58,6 @@ public class MorseCodeDecoding {
         map.put('0', "-----");
         map.put(' ', "|");
 
-        return map;
     }
 
     public static String encrypt(String plaintext, Map<Character, String> map) {
@@ -82,10 +82,9 @@ public class MorseCodeDecoding {
                 end = i + 1;
                 String sequence = cipherText.substring(start, end);
                 plainText = plainText.append(getKey(sequence, map));
-                System.out.println("plaintest akcbh " + plainText);
                 break;
             }
-            if (charPos.equals('|')) {
+            if (charPos.equals("|")) {
                 start += 1;
             }
 
@@ -93,11 +92,8 @@ public class MorseCodeDecoding {
                 end = i;
                 String sequence = cipherText.substring(start, end);
                 plainText = plainText.append(getKey(sequence, map));
-                System.out.println("plaintest akcbh " + plainText);
                 start = i + 1;
             }
-
-
         }
         return plainText.toString();
     }
@@ -111,5 +107,4 @@ public class MorseCodeDecoding {
         }
         return key.toString();
     }
-
 }
