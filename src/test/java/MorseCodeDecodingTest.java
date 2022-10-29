@@ -121,17 +121,17 @@ class MorseCodeDecodingTest {
                 "The decoding of Morse code is wrong.");
     }
 
-//    @ParameterizedTest
-//    @ValueSource(strings = {"-.-- . ... - . .-. -.. .- -.-- | .. ... | .... .. ... - --- .-. -.-- | - --- -- --- .-. .-. --- .-- | .. ... | .- | -- -.-- ... - . .-. -.-- | -... ..- - | - --- -.. .- -.-- | .. ... | .- | --. .. ..-. - | - .... .- - | .. ... | .-- .... -.-- | .. - ... | -.-. .- .-.. .-.. . -.. | - .... . | .--. .-. . ... . -. -"})
-//    void decryptMorseCodesOfOthers(String morseCode) {
-//        Map<Character, String> morseCodeMap = new HashMap<>();
-//        MorseCodeDecoding.fillMorseCodeMap(morseCodeMap);
-//
-//        String resultPlaintext = MorseCodeDecoding.decrypt(morseCode, morseCodeMap, false);
-//
-//        String expectedPlaintext = "YESTERDAY IS HISTORY TOMORROW IS A MYSTERY BUT TODAY IS A GIFT THAT IS WHY ITS CALLED THE PRESENT";
-//
-//        assertEquals(expectedPlaintext, resultPlaintext,
-//                "The decoding of Morse code is wrong.");
-//    }
+    @ParameterizedTest
+    @ValueSource(strings = {"_. . ..._ . ._. * __. ___ _. _. ._ * __. .. ..._ . * _.__ ___ .._ * .._ .__. ._._._ * _. . ..._ . ._. * __. ___ _. _. ._ * ._.. . _ * _.__ ___ .._ * _.. ___ .__ _. ._._._ * _. . ..._ . ._. *  __. ___ _. _. ._ * ._. .._ _. * ._ ._. ___ .._ _. _.. * ._ _. _.. * _.. . ... . ._. _ * _.__ ___ .._ ._._._ * _. . ..._ . ._. * __. ___ _. _. ._ * __ ._ _._ . * _.__ ___ .._ * _._. ._. _.__ ._._._ * _. . ..._ . ._. * __. ___ _. _. ._ * ... ._ _.__ * __. ___ ___ _.. _... _.__ . ._._._ * _. . ..._ . ._. * __. ___ _. _. ._ * _ . ._.. ._.. * ._ * ._.. .. . * ._ _. _.. * .... .._ ._. _ * _.__ ___ .._ ._._._"})
+    void decryptMorseCodesWithUnderscoresAndAsterisks(String morseCode) {
+        Map<Character, String> morseCodeMap = new HashMap<>();
+        MorseCodeDecoding.fillMorseCodeMap(morseCodeMap);
+
+        String resultPlaintext = MorseCodeDecoding.decrypt(morseCode, morseCodeMap, false);
+
+        String expectedPlaintext = "never gonna give you up  never gonna let you down  never gonna run around and desert you  never gonna make you cry  never gonna say goodbye  never gonna tell a lie and hurt you ";
+
+        assertEquals(expectedPlaintext, resultPlaintext,
+                "The decoding of Morse code is wrong.");
+    }
 }

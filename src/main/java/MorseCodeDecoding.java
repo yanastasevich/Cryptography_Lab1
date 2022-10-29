@@ -55,22 +55,23 @@ public class MorseCodeDecoding {
         map.put('9', "----.");
         map.put('0', "-----");
         map.put(' ', "|");
-
     }
 
     public static String encrypt(String plaintext, Map<Character, String> map) {
         StringBuilder ciphertext = new StringBuilder();
-
-        String plainText = getTrimmedStringWithSingleSpaces(plaintext);
+        String plainText = getTrimmedStringWithSingleSpaces(plaintext).toLowerCase();
 
         for (int i = 0; i < plainText.length(); i++) {
-            ciphertext.append(map.get(plainText.toLowerCase().charAt(i)));
+            Character charPos = plainText.charAt(i);
+            // skip any unexpected characters not contained in the map
+            if (map.containsKey(charPos)) {
+                ciphertext.append(map.get(charPos));
+            } else continue;
             // don't append a space if it's the end of the string
             if (i < plainText.length() - 1) {
                 ciphertext.append(' ');
             }
         }
-
         return ciphertext.toString();
     }
 
@@ -83,13 +84,12 @@ public class MorseCodeDecoding {
         int end;
         StringBuilder plainText = new StringBuilder();
 
-        cipherText = cipherText.trim();
-        cipherText = cipherText.replaceAll("\\s+", " ");
+        cipherText = getTrimmedStringWithSingleSpaces(cipherText);
+        cipherText = equalizeCharacters(cipherText);
 
         for (int i = 0; i < cipherText.length(); i++) {
             String charPos = Character.toString(cipherText.charAt(i));
 
-            if (charPos.equals("_")) charPos = "-";
             if (i == cipherText.length() - 1) {
                 end = i + 1;
                 String sequence = cipherText.substring(start, end);
@@ -110,6 +110,12 @@ public class MorseCodeDecoding {
             return plainText.toString().toUpperCase();
         }
         return plainText.toString();
+    }
+
+    public static String equalizeCharacters(String cipherText) {
+        cipherText = cipherText.replace("*", "|");
+        cipherText = cipherText.replace("_", "-");
+        return cipherText;
     }
 
     public static String getKey(String value, Map<Character, String> map) {
