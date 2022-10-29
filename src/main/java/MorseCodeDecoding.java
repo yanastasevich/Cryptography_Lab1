@@ -1,51 +1,49 @@
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class MorseCodeDecoding {
     public static Map<Character, String> morseCodeMap = new HashMap<>();
     static String plainText = "everything is pointless there is no meaning to life";
-
+    static boolean decryptAsUpperCase = true;
 
     public static void main(String[] args) {
+        System.out.println("Decoding " + plainText);
         fillMorseCodeMap(morseCodeMap);
 
-        String cipherText = encrypt(plainText);
-        System.out.println("Ciphertext is " + cipherText);
+        String cipherText = encrypt(plainText, morseCodeMap);
+        System.out.println("After encryption, ciphertext is " + cipherText);
 
-        //String value = ". ...- . .-. -.-- - .... .. -. --. | .. ... | .--. --- .. -. - .-.. . ... ... | - .... . .-. . | .. ... | -. --- | -- . .- -. .. -. --. | - --- | .-.. .. ..-. .";
-        String plainText = decrypt(cipherText);
-        //TODO: the phrase is decoded with LIF in the end
-        System.out.println("decoded phrase is " + plainText);
+        String plainText = decrypt(cipherText, morseCodeMap, decryptAsUpperCase);
+        System.out.println("After decryption, plaintext is " + plainText);
     }
 
     public static void fillMorseCodeMap(Map<Character, String> map) {
-        map.put('A', ".-");
-        map.put('B', "-...");
-        map.put('C', "-.-.");
-        map.put('D', "-..");
-        map.put('E', ".");
-        map.put('F', "..-.");
-        map.put('G', "--.");
-        map.put('H', "....");
-        map.put('I', "..");
-        map.put('J', ".---");
-        map.put('K', "-.-");
-        map.put('L', ".-..");
-        map.put('M', "--");
-        map.put('N', "-.");
-        map.put('O', "---");
-        map.put('P', ".--.");
-        map.put('Q', "--.-");
-        map.put('R', ".-.");
-        map.put('S', "...");
-        map.put('T', "-");
-        map.put('U', "..-");
-        map.put('V', "...-");
-        map.put('W', ".--");
-        map.put('X', "-..-");
-        map.put('Y', "-.--");
-        map.put('Z', "--..");
+        map.put('a', ".-");
+        map.put('b', "-...");
+        map.put('c', "-.-.");
+        map.put('d', "-..");
+        map.put('e', ".");
+        map.put('f', "..-.");
+        map.put('g', "--.");
+        map.put('h', "....");
+        map.put('i', "..");
+        map.put('j', ".---");
+        map.put('k', "-.-");
+        map.put('l', ".-..");
+        map.put('m', "--");
+        map.put('n', "-.");
+        map.put('o', "---");
+        map.put('p', ".--.");
+        map.put('q', "--.-");
+        map.put('r', ".-.");
+        map.put('s', "...");
+        map.put('t', "-");
+        map.put('u', "..-");
+        map.put('v', "...-");
+        map.put('w', ".--");
+        map.put('x', "-..-");
+        map.put('y', "-.--");
+        map.put('z', "--..");
         map.put('1', ".----");
         map.put('2', "..---");
         map.put('3', "...--");
@@ -60,40 +58,56 @@ public class MorseCodeDecoding {
 
     }
 
-    public static String encrypt(String plaintext) {
+    public static String encrypt(String plaintext, Map<Character, String> map) {
         StringBuilder ciphertext = new StringBuilder();
-        for (int i = 0; i < plaintext.length(); i++) {
-            ciphertext
-                    .append(morseCodeMap.get(plaintext.toUpperCase(Locale.ROOT).charAt(i)))
-                    .append(' ');
+
+        String plainText = getTrimmedStringWithSingleSpaces(plaintext);
+
+        for (int i = 0; i < plainText.length(); i++) {
+            ciphertext.append(map.get(plainText.toLowerCase().charAt(i)));
+            // don't append a space if it's the end of the string
+            if (i < plainText.length() - 1) {
+                ciphertext.append(' ');
+            }
         }
+
         return ciphertext.toString();
     }
 
-    public static String decrypt(String cipherText) {
+    private static String getTrimmedStringWithSingleSpaces(String text) {
+        return text.trim().replaceAll("\\s+", " ");
+    }
+
+    public static String decrypt(String cipherText, Map<Character, String> map, boolean isUpperCase) {
         int start = 0;
-        int end = 0;
+        int end;
         StringBuilder plainText = new StringBuilder();
 
+        cipherText = cipherText.trim();
+        cipherText = cipherText.replaceAll("\\s+", " ");
 
         for (int i = 0; i < cipherText.length(); i++) {
             String charPos = Character.toString(cipherText.charAt(i));
+
+            if (charPos.equals("_")) charPos = "-";
             if (i == cipherText.length() - 1) {
                 end = i + 1;
                 String sequence = cipherText.substring(start, end);
-                plainText = plainText.append(getKey(sequence, morseCodeMap));
+                plainText = plainText.append(getKey(sequence, map));
                 break;
             }
             if (charPos.equals("|")) {
                 start += 1;
             }
-
             if (charPos.equals(" ")) {
                 end = i;
                 String sequence = cipherText.substring(start, end);
-                plainText = plainText.append(getKey(sequence, morseCodeMap));
+                plainText = plainText.append(getKey(sequence, map));
                 start = i + 1;
             }
+        }
+        if (isUpperCase) {
+            return plainText.toString().toUpperCase();
         }
         return plainText.toString();
     }
