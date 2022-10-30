@@ -61,6 +61,9 @@ public class MorseCodeDecoding {
         StringBuilder ciphertext = new StringBuilder();
         String plainText = getTrimmedStringWithSingleSpaces(plaintext).toLowerCase();
 
+//        String pattern = "[^a-z0-9/s+]";
+//        plainText = plainText.replaceAll(pattern, "");
+
         for (int i = 0; i < plainText.length(); i++) {
             Character charPos = plainText.charAt(i);
             // skip any unexpected characters not contained in the map
